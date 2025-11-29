@@ -156,6 +156,7 @@ class SpeechSession(threading.Thread):
 PROJECT_ROOT = Path(__file__).resolve().parent
 OUTPUT_DIR = PROJECT_ROOT / "output"
 API_KEY_FILE = PROJECT_ROOT / "api_key.txt"
+API_KEY_DEFAULT = "AQVNx_obfAULMcaf5l-g00YP7hco3w9Yz-VTCDkQ"
 
 
 def _load_api_key() -> str:
@@ -167,7 +168,7 @@ def _load_api_key() -> str:
             return API_KEY_FILE.read_text(encoding="utf-8").strip()
         except OSError:
             return ""
-    return ""
+    return API_KEY_DEFAULT
 
 
 class AnimatedMic:
