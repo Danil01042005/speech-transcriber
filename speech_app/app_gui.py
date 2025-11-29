@@ -153,7 +153,21 @@ class SpeechSession(threading.Thread):
             yield stt_pb2.StreamingRequest(chunk=stt_pb2.AudioChunk(data=data))
 
 
-API_KEY_DEFAULT = "AQVNx_obfAULMcaf5l-g00YP7hco3w9Yz-VTCDkQ"
+PROJECT_ROOT = Path(__file__).resolve().parent
+OUTPUT_DIR = PROJECT_ROOT / "output"
+API_KEY_FILE = PROJECT_ROOT / "api_key.txt"
+
+
+def _load_api_key() -> str:
+    env_key = os.getenv("SPEECHKIT_API_KEY", "").strip()
+    if env_key:
+        return env_key
+    if API_KEY_FILE.exists():
+        try:
+            return API_KEY_FILE.read_text(encoding="utf-8").strip()
+        except OSError:
+            return ""
+    return ""
 
 
 class AnimatedMic:
@@ -226,7 +240,7 @@ class SpeechkitApp:
         self.root.configure(bg="#0d0b1a")
         self.root.minsize(640, 480)
 
-        self.api_key = os.getenv("SPEECHKIT_API_KEY", API_KEY_DEFAULT).strip()
+        self.api_key = _load_api_key()
         self.status_var = tk.StringVar(value="Готово к записи")
 
         self._build_ui()

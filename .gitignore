@@ -21,3 +21,6 @@ dist/
 Thumbs.db
 .DS_Store
 
+# Local API key file
+speech_app/api_key.txt
+
